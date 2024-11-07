@@ -1,0 +1,35 @@
+services:
+  dossier-job-generator:
+    build:
+      context: ..
+      dockerfile: Docker/JobGenerator.Dockerfile
+    image: adfactors/dossier-job-generator
+    container_name: af-djg
+    env_file:
+      - ../Sahadeva.Dossier.JobGenerator/.env
+    environment:
+      - NETCORE_ENVIRONMENT=docker #important! setting this allows the docker appsettings to be picked up
+      - DEBUG_ENV=true #prints config to console
+    volumes:
+      - ../logs:/var/log/adfactors #host mapping which should also be present in filebeat so that it can read the logs
+    extra_hosts:
+      - "host.docker.internal:$HOST_INTERNAL_IP"
+
+  dossier-document-generator:
+    build:
+      context: ..
+      dockerfile: Docker/DocumentGenerator.Dockerfile
+    image: adfactors/dossier-document-generator
+    container_name: af-ddg
+    env_file:
+      - ../Sahadeva.Dossier.DocumentGenerator/.env
+    environment:
+      - NETCORE_ENVIRONMENT=docker #important! setting this allows the docker appsettings to be picked up
+      - DEBUG_ENV=true #prints config to console
+    volumes:
+      - ../logs:/var/log/adfactors #host mapping which should also be present in filebeat so that it can read the logs
+      - /mnt/c/projects/adFactors/Dossier/templates:/app/templates
+      - /mnt/c/projects/adFactors/Dossier/output:/app/output
+      - /mnt/c/projects/adFactors/Dossier/cache:/app/cache
+    extra_hosts:
+      - "host.docker.internal:$HOST_INTERNAL_IP"
