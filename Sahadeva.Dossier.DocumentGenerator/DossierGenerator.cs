@@ -143,7 +143,7 @@ namespace Sahadeva.Dossier.DocumentGenerator
 
         private async Task<MemoryStream> ReadFromTemplate(string fileName)
         {
-            var filePath = Path.Combine(_templateStorageOptions.TemplatePath, fileName).Replace("\\", "/");
+            var filePath = Path.Combine(_templateStorageOptions.TemplatePath, fileName.TrimStart('/')).Replace("\\", "/");
             var content = await _storageProvider.GetFile(filePath);
 
             // This creates an expandable memory stream. Do not try to create a new MemoryStream directly from the byte[]

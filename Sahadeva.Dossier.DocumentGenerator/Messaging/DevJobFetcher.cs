@@ -26,9 +26,7 @@ namespace Sahadeva.Dossier.DocumentGenerator.Messaging
                     Guid.NewGuid().ToString(),
                     Convert.ToString(job["TemplateName"]),
                     Convert.ToInt32(job["DID"]),
-					//Convert.ToString(job["GeneratedFileLocation"])
-
-					"D:\\Shubham All Files\\Projects\\WordAutomation Arnold GithubCode 29Oct2024\\Sahadev_Dossier-main\\Sahadev_Dossier-main\\output",
+					Convert.ToString(job["GeneratedFileLocation"]),
 					Convert.ToString(job["TagIds"])
 					));
             }

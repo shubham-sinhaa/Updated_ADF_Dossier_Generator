@@ -44,13 +44,14 @@ namespace Sahadeva.Dossier.DAL
 			{
 				using (DbCommand dbcommand = DataAccessWrapper.GetStoredProcCommand(_dataSetMap[dataSet]))
 				{
-					if (dataSet.ToString() == "ClientGraph" || dataSet.ToString() == "CompetitorGraph") { DataTable dt = new DataTable(); return dt; }
-
-					DataAccessWrapper.AddInParameter(dbcommand, DatabaseConstants.DID, DbType.Int32, coverageDossierId);
-					DataAccessWrapper.AddInParameter(dbcommand, DatabaseConstants.LPID, DbType.String, LPID);
-					DataAccessWrapper.AddInParameter(dbcommand, DatabaseConstants.LOID, DbType.String, LOID);
-					DataAccessWrapper.AddInParameter(dbcommand, DatabaseConstants.TAGID, DbType.String,
-						TagIds);
+					if (dataSet.ToString() != "ClientGraph" && dataSet.ToString() != "CompetitorGraph")
+					{
+						DataAccessWrapper.AddInParameter(dbcommand, DatabaseConstants.DID, DbType.Int32, coverageDossierId);
+						DataAccessWrapper.AddInParameter(dbcommand, DatabaseConstants.LPID, DbType.String, LPID);
+						DataAccessWrapper.AddInParameter(dbcommand, DatabaseConstants.LOID, DbType.String, LOID);
+						DataAccessWrapper.AddInParameter(dbcommand, DatabaseConstants.TAGID, DbType.String,
+							TagIds);
+					}
 
 					ds = DataAccessWrapper.ExecuteDataSet(dbcommand);
 				}
@@ -63,7 +64,7 @@ namespace Sahadeva.Dossier.DAL
         {
             DataTable dt = new DataTable();
 
-            using (DataAccessWrapper DataAccessWrapper = new DataAccessWrapper(DatabaseConstants.ConnectionString_C2))
+            using (DataAccessWrapper DataAccessWrapper = new DataAccessWrapper(DatabaseConstants.ConnectionString_C3))
             {
                 using (DbCommand dbCommand = DataAccessWrapper.GetStoredProcCommand(DatabaseConstants.Fetch_ConfigurationForGeneration))
                 {
@@ -88,6 +89,7 @@ namespace Sahadeva.Dossier.DAL
 
         public void UpdateJobStatus(int coverageDossierId, DossierStatus status)
         {
+			return;  //Status Update SP is pending
             using (DataAccessWrapper DataAccessWrapper = new DataAccessWrapper(DatabaseConstants.ConnectionString))
             {
                 using (DbCommand dbCommand = DataAccessWrapper.GetStoredProcCommand(DatabaseConstants.USP_CoverageDossier_UpdateStatus))
@@ -107,7 +109,7 @@ namespace Sahadeva.Dossier.DAL
 			switch (SectionName)
 			{
                 case "OverviewSummary":
-				 DynamicConnectionString = DatabaseConstants.ConnectionString_C2;
+				 DynamicConnectionString = DatabaseConstants.ConnectionString_C3;
 					break;
 				default:
 					DynamicConnectionString = DatabaseConstants.ConnectionString_E;
@@ -123,7 +125,30 @@ namespace Sahadeva.Dossier.DAL
 			{
 				DataSet ds = new DataSet();
 
-				using (DataAccessWrapper DataAccessWrapper = new DataAccessWrapper(DatabaseConstants.ConnectionString_C2))
+				using (DataAccessWrapper DataAccessWrapper = new DataAccessWrapper(DatabaseConstants.ConnectionString_C3))
+				{
+					using (DbCommand dbcommand = DataAccessWrapper.GetStoredProcCommand(DatabaseConstants.Fetch_LinkIdsForGeneration))
+					{
+						DataAccessWrapper.AddInParameter(dbcommand, DatabaseConstants.DID, DbType.Int32, DID);
+						ds = DataAccessWrapper.ExecuteDataSet(dbcommand);
+					}
+				}
+
+				return ds;
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public DataSet FetchTagDetailIds(Int32 DID)
+		{
+			try
+			{
+				DataSet ds = new DataSet();
+
+				using (DataAccessWrapper DataAccessWrapper = new DataAccessWrapper(DatabaseConstants.ConnectionString_C3))
 				{
 					using (DbCommand dbcommand = DataAccessWrapper.GetStoredProcCommand(DatabaseConstants.Fetch_LinkIdsForGeneration))
 					{

@@ -4,7 +4,7 @@
     {
         public const string ConnectionString = "ConnectionString";
 
-		public const string ConnectionString_C2 = "ConnectionString_C2";
+		public const string ConnectionString_C3 = "ConnectionString_C3";
 		public const string ConnectionString_E = "ConnectionString_E";
 
 		// SPs
@@ -13,6 +13,7 @@
 
 		public const string Fetch_ConfigurationForGeneration = "Fetch_ConfigurationForGeneration";
 		public const string Fetch_LinkIdsForGeneration = "Fetch_LinkIdsForGeneration";
+		public const string Fetch_LinkIdAndTagDetail_Ids = "Fetch_LinkIdAndTagDetail_Ids";
 
 		// SP Params
 		public const string CDID = "CDID";
@@ -22,5 +23,6 @@
 		public const string LPID = "LPID";
 		public const string LOID = "LOID";
 		public const string TAGID = "TAGID";
+		public const string TAGDETAILS = "TAGDETAILS";
 	}
 }
